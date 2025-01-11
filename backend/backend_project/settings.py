@@ -37,10 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'my_app'
 ]
 
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware', #處理前後端跨域問題
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,6 +52,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+#允許所有來源 僅限開發階段
+CORS_ALLOW_ALL_ORIGINS = True
+
+#允許特定來源
+#CORS_ALLOWED_ORIGINS = [
+#    "http://localhost:3000",  # React 的開發端口
+#]
+
 
 ROOT_URLCONF = 'backend_project.urls'
 
