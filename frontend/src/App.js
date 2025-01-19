@@ -25,6 +25,8 @@
 // export default App;
 import React from 'react';
 import StockList from './components/StockList';
+import StockIndex from './pages/StockIndex';
+import { AuthProvider } from './context/AuthContext'; // 引入 AuthProvider
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
@@ -32,16 +34,21 @@ import LoginPage from './pages/LoginPage';
 
 function App() {
     return (
-        // <div>
-        //     <h1>我的 React App</h1>
-        //     <StockList />
-        // </div>
+        <>
+        {/* <div>
+            <h1>我的 React App</h1>
+            <StockList />
+        </div> */}
+        <AuthProvider> {/* 將整個應用包裹在 AuthProvider 中 */}
         <Router>
-        <Routes>
-            <Route path="/" element={<StockList />} />
-            <Route path="/login" element={<LoginPage />} />
-        </Routes>
-    </Router>
+            <Routes>
+                <Route path="/" element={<StockList />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/dashboard" element={<StockIndex />} />
+            </Routes>
+        </Router>
+        </AuthProvider>
+    </>
     );
 }
 

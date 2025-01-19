@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from django.contrib.auth.hashers import check_password
+
 from rest_framework.response import Response
 from .models import Product, UserInfo
 
@@ -24,23 +25,38 @@ def get_products(request):
 
 @api_view(['POST'])
 def login_user(request):
+    print("login_user API")
     username = request.data.get('username')
     password = request.data.get('password')
     print(username)
     print(password)
     UserInfo = custom_authenticate( username=username, password=password)
-    if UserInfo is not None:
-        return Response({'message': 'Login successful', 'user': username}, status=200)
+    print(UserInfo)
+    if UserInfo.get('status') == 'success' :
+        return Response({'message': UserInfo.get('message'), 'user': UserInfo.get('user'), 'status': True}, status=200)
     else:
-        return Response({'error': 'Invalid credentials'}, status=400)
+        return Response({'message': UserInfo.get('message'), 'statutype': False}, status=400)
     
 
 def custom_authenticate(username, password):
         try:
-            user = UserInfo.objects.get(username=username)
-            if check_password(password, user.password):
-                return user
+            user = UserInfo.objects.get(UserName=username)
+            if check_password(password, user.Password):
+                return {
+                    "status": "success",
+                    "message": "Login successful",
+                    "user": {
+                        "id": user.UserID,
+                        "username": user.UserName,
+                            }
+                }
             else:
-                raise Exception("Invalid password")
+                return {
+                    "status": "error",
+                    "message": "Invalid username or password"
+            }
         except UserInfo.DoesNotExist:
-            raise Exception("User does not exist")
+            return {
+                "status": "error",
+                "message": "User does not exist"
+        }

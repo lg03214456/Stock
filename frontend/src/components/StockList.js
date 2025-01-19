@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchProducts } from '../services/api'; // 引入 API 函數
+import ButtonAppBar from '../components/Header';
 
 const StockList = () => {
     const [products, setProducts] = useState([]);
@@ -25,6 +26,10 @@ const StockList = () => {
     }
 
     return (
+        <>
+        <div>
+            <ButtonAppBar/>
+        </div>  
         <div>
             <h1>產品列表</h1>
             <ul>
@@ -35,6 +40,7 @@ const StockList = () => {
                 ))}
             </ul>
         </div>
+        </>
     );
 };
 
